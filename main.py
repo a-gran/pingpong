@@ -55,13 +55,14 @@ score = font.render('0 : 0', False, (180, 0, 0))
 #флаги отвечающие за состояние игры
 game = True
 finish = False
+game_over = False
 clock = pygame.time.Clock()
 FPS = 60
 
 #создания мяча и ракетки
 racket1 = Player('racket.png', 30, 200, 4, 50, 150, 0) # при созданни спрайта добавляется еще два параметра
 racket2 = Player('racket.png', 1120, 200, 4, 50, 150, 0)
-ball = GameSprite('tenis_ball.png', 200, 200, 4, 50, 50)
+ball = GameSprite('tenis_ball.png', 200, 200, 4, 50, 50, 0)
 
 speed_x = 5
 speed_y = 5
@@ -88,15 +89,19 @@ while game:
 
         # если мяч улетел дальше ракетки, выводим условие проигрыша для первого игрока
         if ball.rect.x < 0:
-            finish = True
-            window.blit(lose1, (200, 200))
-            game_over = True
+            racket1.point += 1
+            if racket1.point > 5:
+                finish = True
+                window.blit(lose1, (200, 200))
+                #game_over = True
 
         # если мяч улетел дальше ракетки, выводим условие проигрыша для второго игрока
         if ball.rect.x > win_width:
-            finish = True
-            window.blit(lose2, (200, 200))
-            game_over = True
+            racket2.point += 1
+            if racket2.point > 5:
+                finish = True
+                window.blit(lose2, (200, 200))
+            #game_over = True
 
         racket1.reset()
         racket2.reset()

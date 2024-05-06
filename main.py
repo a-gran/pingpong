@@ -4,7 +4,7 @@ import pygame
 #класс-родитель для спрайтов
 class GameSprite(pygame.sprite.Sprite):
     #конструктор класса
-    def __init__(self, player_image, player_x, player_y, player_speed, width, height): # добавить еще два параметра при создании и задавать размер прямоугольгника для картинки самим
+    def __init__(self, player_image, player_x, player_y, player_speed, width, height, points): # добавить еще два параметра при создании и задавать размер прямоугольгника для картинки самим
         #pygame.sprite.Sprite.__init__(self)
         super().__init__()
         # каждый спрайт должен хранить свойство image - изображение
@@ -14,6 +14,7 @@ class GameSprite(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = player_x
         self.rect.y = player_y
+        self.points = points
 
     def reset(self):
         window.blit(self.image, (self.rect.x, self.rect.y))
@@ -58,8 +59,8 @@ clock = pygame.time.Clock()
 FPS = 60
 
 #создания мяча и ракетки
-racket1 = Player('racket.png', 30, 200, 4, 50, 150) # при созданни спрайта добавляется еще два параметра
-racket2 = Player('racket.png', 1120, 200, 4, 50, 150)
+racket1 = Player('racket.png', 30, 200, 4, 50, 150, 0) # при созданни спрайта добавляется еще два параметра
+racket2 = Player('racket.png', 1120, 200, 4, 50, 150, 0)
 ball = GameSprite('tenis_ball.png', 200, 200, 4, 50, 50)
 
 speed_x = 5

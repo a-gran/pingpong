@@ -4,7 +4,7 @@ import pygame
 #класс-родитель для спрайтов
 class GameSprite(pygame.sprite.Sprite):
     #конструктор класса
-    def __init__(self, player_image, player_x, player_y, player_speed, width, height, points): # добавить еще два параметра при создании и задавать размер прямоугольгника для картинки самим
+    def __init__(self, player_image, player_x, player_y, player_speed, width, height): # добавить еще два параметра при создании и задавать размер прямоугольгника для картинки самим
         #pygame.sprite.Sprite.__init__(self)
         super().__init__()
         # каждый спрайт должен хранить свойство image - изображение
@@ -14,13 +14,16 @@ class GameSprite(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = player_x
         self.rect.y = player_y
-        self.points = points
 
     def reset(self):
         window.blit(self.image, (self.rect.x, self.rect.y))
 
 #класс-наследник для спрайта-игрока (управляется стрелками)
 class Player(GameSprite):
+    def __init__(self, player_image, player_x, player_y, player_speed, width, height, points):
+        super().__init__(player_image, player_x, player_y, player_speed, width, height)
+        self.points = points
+
     def update_r(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_UP] and self.rect.y > 5:
@@ -39,6 +42,11 @@ class Player(GameSprite):
             if self.rect.y > 550:
                 self.rect.y = 550
 
+# нам нужны такие картинки:
+img_back = "galaxy.jpg"
+img_asteroid = "asteroid.png"
+img_racket = "racket.png"
+
 #Игровая сцена:
 back = (200, 255, 255) # цвет фона (background)
 win_width = 1200
@@ -52,6 +60,11 @@ lose1 = font.render('PLAYER 1 LOSE!', True, (180, 0, 0))
 lose2 = font.render('PLAYER 2 LOSE!', True, (180, 0, 0))
 score = font.render('0 : 0', False, (180, 0, 0))
 
+#фоновая музыка
+pygame.mixer.init()
+pygame.mixer.music.load('space.ogg')
+pygame.mixer.music.play()
+
 #флаги отвечающие за состояние игры
 game = True
 finish = False
@@ -62,7 +75,7 @@ FPS = 60
 #создания мяча и ракетки
 racket1 = Player('racket.png', 30, 200, 4, 50, 150, 0) # при созданни спрайта добавляется еще два параметра
 racket2 = Player('racket.png', 1120, 200, 4, 50, 150, 0)
-ball = GameSprite('tenis_ball.png', 200, 200, 4, 50, 50, 0)
+ball = GameSprite('tenis_ball.png', 200, 200, 4, 50, 50)
 
 speed_x = 5
 speed_y = 5

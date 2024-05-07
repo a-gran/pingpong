@@ -43,22 +43,26 @@ class Player(GameSprite):
                 self.rect.y = 550
 
 # нам нужны такие картинки:
-img_back = "galaxy.jpg"
-img_asteroid = "asteroid.png"
-img_racket = "racket.png"
+img_back = 'galaxy.jpg'
+img_asteroid = 'asteroid.png'
+img_ball1 = 'tenis_ball.png'
+img_racket = 'racket.png'
+img_ball2 = 'circle1.png'
+img_ball3 = 'circle3.png'
 
 #Игровая сцена:
 back = (200, 255, 255) # цвет фона (background)
 win_width = 1200
 win_height = 700
 window = pygame.display.set_mode((win_width, win_height))
-window.fill(back)
+background = pygame.transform.scale(pygame.image.load(img_back), (win_width, win_height))
+#window.fill(back)
 
 pygame.font.init()
-font = pygame.font.Font(None, 35)
-lose1 = font.render('PLAYER 1 LOSE!', True, (180, 0, 0))
-lose2 = font.render('PLAYER 2 LOSE!', True, (180, 0, 0))
-score = font.render('0 : 0', False, (180, 0, 0))
+font1 = pygame.font.Font(None, 36)
+font2 = pygame.font.Font(None, 36)
+lose1 = font1.render('PLAYER 1 LOSE!', True, (180, 0, 0))
+lose2 = font1.render('PLAYER 2 LOSE!', True, (180, 0, 0))
 
 #фоновая музыка
 pygame.mixer.init()
@@ -73,9 +77,9 @@ clock = pygame.time.Clock()
 FPS = 60
 
 #создания мяча и ракетки
-racket1 = Player('racket.png', 30, 200, 4, 50, 150, 0) # при созданни спрайта добавляется еще два параметра
-racket2 = Player('racket.png', 1120, 200, 4, 50, 150, 0)
-ball = GameSprite('tenis_ball.png', 200, 200, 4, 50, 50)
+racket1 = Player(img_racket, 30, 200, 4, 50, 150, 0) # при созданни спрайта добавляется еще два параметра
+racket2 = Player(img_racket, 1120, 200, 4, 50, 150, 0)
+ball = GameSprite(img_asteroid, 200, 200, 4, 50, 50)
 
 speed_x = 5
 speed_y = 5
@@ -86,11 +90,14 @@ while game:
             game = False
 
     if finish != True:
-        window.fill(back)
+        score = font2.render("Счет: " + str(racket1.points) + ' : ' + str(racket2.points), 1, (255, 255, 255))
+        window.blit(score, (500, 20))
+        #window.fill(back)
+        window.blit(background,(0,0))
         racket1.update_l()
         racket2.update_r()
-        ball.rect.x == speed_x
-        ball.rect.y == speed_y
+        ball.rect.x += speed_x
+        ball.rect.y += speed_y
 
         if pygame.sprite.collide_rect(racket1, ball) or pygame.sprite.collide_rect(racket2, ball):
             speed_x *= -1
@@ -102,19 +109,19 @@ while game:
 
         # если мяч улетел дальше ракетки, выводим условие проигрыша для первого игрока
         if ball.rect.x < 0:
-            racket1.point += 1
-            if racket1.point > 5:
+            racket1.points += 1
+            if racket1.points > 5:
                 finish = True
                 window.blit(lose1, (200, 200))
                 #game_over = True
 
         # если мяч улетел дальше ракетки, выводим условие проигрыша для второго игрока
         if ball.rect.x > win_width:
-            racket2.point += 1
-            if racket2.point > 5:
+            racket2.points += 1
+            if racket1.points > 5:
                 finish = True
                 window.blit(lose2, (200, 200))
-            #game_over = True
+                #game_over = True
 
         racket1.reset()
         racket2.reset()

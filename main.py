@@ -1,10 +1,10 @@
 import pygame
-'''Необходимые классы'''
 
 #класс-родитель для спрайтов
 class GameSprite(pygame.sprite.Sprite):
     #конструктор класса
-    def __init__(self, player_image, player_x, player_y, player_speed, width, height): # добавить еще два параметра при создании и задавать размер прямоугольгника для картинки самим
+    # добавить еще два параметра при создании и задавать размер прямоугольгника для картинки самим
+    def __init__(self, player_image, player_x, player_y, player_speed, width, height):
         #pygame.sprite.Sprite.__init__(self)
         super().__init__()
         # каждый спрайт должен хранить свойство image - изображение
